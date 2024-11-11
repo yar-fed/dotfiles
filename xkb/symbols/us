@@ -1,0 +1,34 @@
+partial alphanumeric_keys
+xkb_symbols "with_arrows" {
+
+    include "us(basic)"
+    name[Group1]= "us (with arrows on hjkl)";
+
+    key <AC06> {
+		repeat = yes,
+		symbols[Group1] = [ h, H,  Left,  Left  ]
+	};
+	key <AC07> {
+		repeat = yes,
+		symbols[Group1] = [ j, J,  Down,  Down  ]
+	};
+	key <AC08> {
+		repeat = yes,
+		symbols[Group1] = [ k, K,    Up, Up  ]
+	};
+	key <AC09> {
+		repeat = yes,
+		symbols[Group1] = [ l, L, Right, Right  ]
+	};
+	key <AD07> {
+		repeat = yes,
+		symbols[Group1] = [ u, U,  Next, Next ]
+	};
+	key <AD08> {
+		repeat = yes,
+		symbols[Group1] = [ i, I, Prior, Prior ]
+	};
+
+    include "level3(ralt_switch)"
+    include "capslock(escape)"
+};

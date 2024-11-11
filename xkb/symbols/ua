@@ -1,0 +1,33 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "with_arrows" {
+
+    include "ua(unicode)"
+    name[Group1]= "Ukrainian (with arrows on hjkl)";
+
+	key <AC06> {
+		repeat = yes,
+		symbols[Group1] = [  Cyrillic_er,  Cyrillic_ER,  Left,     Home  ]
+	};
+	key <AC07> {
+		repeat = yes,
+		symbols[Group1] = [   Cyrillic_o,   Cyrillic_O,  Down,     Next  ]
+	};
+	key <AC08> {
+		repeat = yes,
+		symbols[Group1] = [  Cyrillic_el,  Cyrillic_EL,    Up,    Prior  ]
+	};
+    key <AC09> {
+		repeat = yes,
+		symbols[Group1] = [  Cyrillic_de,  Cyrillic_DE, Right,      End  ]
+	};
+	key <AD07> {
+		repeat = yes,
+		symbols[Group1] = [ Cyrillic_ghe,    Cyrillic_GHE,  Next, Next ]
+	};
+	key <AD08> {
+		repeat = yes,
+		symbols[Group1] = [ Cyrillic_sha,    Cyrillic_SHA, Prior, Prior ]
+	};
+
+    include "capslock(escape)"
+};

@@ -2,212 +2,240 @@ nnoremap <Space> <Nop>
 let mapleader = " "
 
 " settings
-	set nocompatible            " disable compatibility to old-time vi
+	set tabstop=4               " number of columns occupied by a tab character
+	set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
+	set shiftwidth=4            " width for autoindents
+	set undodir=~/.config/nvim/undodir
+
+" important (custom set)
+	set iskeyword+=-			" remove '-' for w jumps
+	set mouse=a                 " Automatically enable mouse usage
+	set mousehide               " Hide the mouse cursor while typing
+	set autoindent              " indent a new line the same amount as the line just typed
+	set scrolloff=2
+	set wildmenu
+	set wildmode=longest:full,full
+	set cc=80,100
+	set foldlevelstart=99
+	filetype plugin indent on   " allows auto-indenting depending on file type
+	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+	set number
+	set cursorline
+	set clipboard=unnamedplus
 	set title
 	set sb                      " split below
 	set spr                     " split right
 	set showmatch               " show matching brackets.
 	set ignorecase              " case insensitive matching
-	set tabstop=4               " number of columns occupied by a tab character
-	set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
-	set shiftwidth=4            " width for autoindents
-	set encoding=utf-8
-	set conceallevel=0
-	set undodir=~/.config/nvim/undodir
-	set mouse=a                 " Automatically enable mouse usage
-	set mousehide               " Hide the mouse cursor while typing
-	set autoindent              " indent a new line the same amount as the line just typed
-	set number                  " add line numbers
-	set wildmenu
-	set wildmode=longest:full,full
-	set cc=100
-	filetype plugin indent on   " allows auto-indenting depending on file type
-	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-	set number
-	set updatetime=1200
-	set cursorline
-	set clipboard=unnamed,unnamedplus
-	let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-	highlight EndOfBuffer guifg=bg
+	set cmdheight=0
 
 
-"	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"	Plug 'deoplete-plugins/deoplete-lsp'
+
 call plug#begin()
-	Plug 'SirVer/ultisnips'
-	Plug 'honza/vim-snippets'
 	Plug 'ap/vim-css-color'
 	Plug 'tanvirtin/monokai.nvim'
 	Plug 'itchyny/lightline.vim'
 	Plug 'tpope/vim-fugitive'
 	Plug 'deris/vim-shot-f'
 	Plug 'yggdroot/indentline'
-	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
 	Plug 'godlygeek/tabular'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'nvim-lua/plenary.nvim'
-	Plug 'nvim-lua/popup.nvim'
 	Plug 'lewis6991/gitsigns.nvim'
 	Plug 'nvim-telescope/telescope.nvim'
+	Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+	Plug 'nvim-telescope/telescope-file-browser.nvim'
 	Plug 'bronson/vim-visual-star-search'
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+	Plug 'nvim-treesitter/playground'
 	Plug 'simeji/winresizer'
-	Plug 'szw/vim-maximizer'
-	Plug 'nathanalderson/yang.vim'
-	Plug 'sunjon/Shade.nvim'
-	Plug 'ms-jpq/coq_nvim'
 	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+	Plug 'numToStr/Comment.nvim'
+	Plug 'ray-x/lsp_signature.nvim'
+	Plug 'folke/which-key.nvim'
+
+	Plug 'hrsh7th/cmp-nvim-lsp'
+	Plug 'hrsh7th/cmp-buffer'
+	Plug 'hrsh7th/cmp-path'
+	Plug 'hrsh7th/cmp-cmdline'
+	Plug 'hrsh7th/nvim-cmp'
+	Plug 'hrsh7th/cmp-vsnip'
+	Plug 'hrsh7th/vim-vsnip'
+
+	Plug 'Glench/Vim-Jinja2-Syntax'
+	Plug 'midchildan/ft-confluence.vim'
+	Plug 'harrisoncramer/gitlab.nvim', { 'do': ':lua require(gitlab.server).build(true)' }
+	Plug 'MunifTanjim/nui.nvim'
+	Plug 'sindrets/diffview.nvim'
 call plug#end()
 
-" .c files
-	au BufNewFile,BufRead *.c set filetype=c
-	au BufNewFile,BufRead *.h set filetype=c
-	au FileType c,cpp setlocal expandtab softtabstop=4 shiftwidth=4 tabstop=4 foldnestmax=1 foldmethod=syntax
-	au FileType xml,yang setlocal expandtab softtabstop=2 shiftwidth=2 tabstop=2
+" au! BufNewFile,BufRead *.h set filetype=c
+" au! FileType c,cpp setlocal noet softtabstop=8 shiftwidth=8 tabstop=8 foldnestmax=1 foldmethod=expr foldexpr=nvim_treesitter#foldexpr() fixeol
+" au! FileType c,cpp setlocal noet softtabstop=8 shiftwidth=8 tabstop=8 foldnestmax=1 foldmethod=manual foldtext=v:lua.vim.treesitter.foldtext() fixeol
+au! FileType c setlocal noet shiftwidth=8 softtabstop=8 tabstop=8 foldnestmax=1 foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldtext= fixeol
+au! FileType cpp setlocal et shiftwidth=4 softtabstop=8 tabstop=8 foldnestmax=1 foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldtext= fixeol
+au! FileType python setlocal et softtabstop=4 shiftwidth=4 tabstop=4 foldnestmax=1 foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldtext= fixeol
+au! FileType xml,yang,json setlocal expandtab softtabstop=2 shiftwidth=2 tabstop=2 indentexpr="" conceallevel=0
 
 
 " spelling
-	map <leader>se :setlocal spell! spelllang=en_us<CR>
-	map <leader>sr :setlocal spell! spelllang=ru_ru<CR>
-	map <leader>su :setlocal spell! spelllang=uk_ua<CR>
+	map <silent> <leader>se :setlocal spell! spelllang=en_us<CR>
+	map <silent> <leader>sr :setlocal spell! spelllang=ru_ru<CR>
+	map <silent> <leader>su :setlocal spell! spelllang=uk_ua<CR>
 
-
-" Set US Layout on leaving insert mode
-	function! SetUsLayout()
-		silent !gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval  "imports.ui.status.keyboard.getInputSourceManager().inputSources[0].activate()" > /dev/null
-	endfunction
-	autocmd InsertLeave * call SetUsLayout()
 
 " shortcuts for configs
-	command! Reload source ~/.config/nvim/init.vim
 	command! Vrc :tabedit ~/.config/nvim/init.vim
-	command! Brc :tabedit ~/.bashrc
+	command! Zrc :tabedit ~/.zshrc
 
 " Session save command
-	command! -bar DisableShade :lua require'shade'.disable()
 	command! -bar SaveSession :mks! ./.vim_s
 	command! -bar SaveAll :wa
 	command! CloseSession :qa
-	command! Sexit DisableShade|SaveAll|SaveSession|CloseSession
+	command! Sexit SaveAll|SaveSession|CloseSession
 
 " Moves inside window
-	noremap H ^
-	noremap L $
-
-" quicklist
-	noremap J :cnext<CR>
-	noremap K :cprevious<CR>
+	noremap <silent> H ^
+	noremap <silent> L $
 
 " Window change
-	tnoremap <A-h> <C-\><C-N><C-w>h
-	tnoremap <A-j> <C-\><C-N><C-w>j
-	tnoremap <A-k> <C-\><C-N><C-w>k
-	tnoremap <A-l> <C-\><C-N><C-w>l
-	inoremap <A-h> <C-\><C-N><C-w>h
-	inoremap <A-j> <C-\><C-N><C-w>j
-	inoremap <A-k> <C-\><C-N><C-w>k
-	inoremap <A-l> <C-\><C-N><C-w>l
-	nnoremap <A-h> <C-w>h
-	nnoremap <A-j> <C-w>j
-	nnoremap <A-k> <C-w>k
-	nnoremap <A-l> <C-w>l
-	nnoremap <A-n> :tabn<CR>
-	nnoremap <A-p> :tabp<CR>
-
-" Save file as sudo on files that require root permission
-	cnoremap w!! execute 'silent! write !sudo -S tee % >/dev/null' <bar> edit!
+	tnoremap <silent> <A-h> <C-\><C-N><C-w>h
+	tnoremap <silent> <A-j> <C-\><C-N><C-w>j
+	tnoremap <silent> <A-k> <C-\><C-N><C-w>k
+	tnoremap <silent> <A-l> <C-\><C-N><C-w>l
+	inoremap <silent> <A-h> <C-\><C-N><C-w>h
+	inoremap <silent> <A-j> <C-\><C-N><C-w>j
+	inoremap <silent> <A-k> <C-\><C-N><C-w>k
+	inoremap <silent> <A-l> <C-\><C-N><C-w>l
+	nnoremap <silent> <A-h> <C-w>h
+	nnoremap <silent> <A-j> <C-w>j
+	nnoremap <silent> <A-k> <C-w>k
+	nnoremap <silent> <A-l> <C-w>l
+	nnoremap <silent> <A-n> :tabn<CR>
+	nnoremap <silent> <A-p> :tabp<CR>
 
 " Folding toggle
-	nnoremap <leader>z za
-	nnoremap z<Space> za
-	nnoremap <leader><leader> za
+	nnoremap <silent> <leader>z za
 
 " Saving shortcuts
-	nnoremap <C-s> :update<CR>
-	nnoremap <leader>s :update<CR>
-
-nnoremap <leader>qq ZZ
-nnoremap <leader>qf ZQ
-
-nnoremap S :%s//g<Left><Left>
+	nnoremap <silent> <C-s> <cmd>update<CR>
 
 " VIsual mode related
-	nnoremap <leader>v V
-	vnoremap . :normal .<CR>
-	vnoremap <leader>h <gv
-	vnoremap <leader>l >gv
+	vnoremap <silent> . :normal .<CR>
+	vnoremap <silent> <leader>h <gv
+	vnoremap <silent> <leader>l >gv
+	vnoremap <silent> P "0p
 
 " Terminal
 	tnoremap <Esc> <C-\><C-n>
 	nnoremap T :terminal<CR>
 
-" Disassabling
-	command! Disassable :e!<CR> :%!xxd -c 32 -g 8 %<CR> :set filetype=xxd<CR>
-
-colorscheme monokai
-syntax on                   " syntax highlighting
-set termguicolors
-
-" Custom highlights
-"	hi! Number gui=italic
-"	hi! Comment gui=italic
-"	hi! Type gui=italic
-"	hi! TSParameter gui=italic guifg=#fd971f
-"	hi! link TSType Type
-"	hi! link TSField TSParameter
-"	hi! link TSProperty TSField
+lua require('pluginit')
+lua require('workspace')
 
 " lsp
-	luafile ~/.config/nvim/lsp.lua
 	nnoremap <silent> <leader>k :lua vim.lsp.buf.hover()<CR>
-	nnoremap <silent> <leader>d :lua vim.lsp.buf.definition()<CR>
-	nnoremap <silent> <leader>lk :lua vim.lsp.buf.hover()<CR>
-	nnoremap <silent> <leader>ld :lua vim.lsp.buf.definition()<CR>
+	" nnoremap <silent> <leader>d :lua vim.lsp.buf.definition()<CR>
 	nnoremap <silent> <leader>lr :lua vim.lsp.buf.rename()<CR>
-	nnoremap <silent> <leader>lj :lua vim.lsp.buf.references()<CR>
-	nnoremap <silent> <leader>lq :lua vim.lsp.diagnostic.set_qflist()<CR>
-	nnoremap <silent> <C-k> :lua vim.lsp.buf.signature_help()<CR>
-	nnoremap <silent> <leader>l <cmd>tab split \| lua vim.lsp.buf.definition()<CR>
+	" nnoremap <silent> <leader>lj :lua vim.lsp.buf.references()<CR>
+	nnoremap <silent> <leader>lq :lua vim.diagnostic.set_qflist()<CR>
+	nnoremap <silent> <leader>ln :lua vim.diagnostic.goto_next()<CR>
+	nnoremap <silent> <leader>lp :lua vim.diagnostic.goto_prev()<CR>
+	nnoremap <silent> <leader>ll <cmd>tab split \| lua vim.lsp.buf.definition()<CR>
 
-" Deoplete
-	let g:deoplete#enable_at_startup = 1
-	autocmd FileType TelescopePrompt call deoplete#custom#buffer_option('auto_complete', v:false)
+" Gitsigns
+	nnoremap <silent> ]h <Cmd>silent! Gitsigns next_hunk<CR>
+	nnoremap <silent> [h <Cmd>silent! Gitsigns prev_hunk<CR>
 
 " Indentline
 	let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
-luafile ~/.config/nvim/pluginit.lua
 
 " telescope
-	nnoremap <leader>fv <cmd>Telescope file_browser<cr>
-	nnoremap <leader>ff <cmd>Telescope find_files<cr>
-	nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-	nnoremap <leader>fb <cmd>Telescope buffers<cr>
-	nnoremap <leader>fj <cmd>Telescope current_buffer_fuzzy_find<cr>
-	cmap <C-F> <Plug>(TelescopeFuzzyCommandSearch)
-	nmap q: <Plug>(TelescopeFuzzyCommandSearch)
-	nmap q/ <Nop>
+	nnoremap <silent> <leader>ge <cmd>Telescope file_browser<cr>
+	nnoremap <silent> <leader>fe <cmd>Telescope file_browser cwd=%:h<cr>
+	nnoremap <silent> <leader>gf <cmd>Telescope find_files<cr>
+	nnoremap <silent> <leader>ff <cmd>Telescope find_files cwd=%:h<cr>
+	nnoremap <silent> <leader>gr <cmd>Telescope live_grep<cr>
+	nnoremap <silent> <leader>fb <cmd>Telescope buffers<cr>
+	nnoremap <silent> <leader>fj <cmd>Telescope current_buffer_fuzzy_find<cr>
+	cmap <silent> <C-F> <Plug>(TelescopeFuzzyCommandSearch)
+	nmap <silent> q: <Plug>(TelescopeFuzzyCommandSearch)
+	nmap <silent> q/ <Nop>
+
+nnoremap <silent> 5j %
+vnoremap <silent> 5j %
+
+" qlist
+	nnoremap <silent> <leader>cn <cmd>cnext<cr>
+	nnoremap <silent> <leader>cp <cmd>cprevious<cr>
+	nnoremap <silent> <leader>cqn <cmd>cnewer<cr>
+	nnoremap <silent> <leader>cqp <cmd>colder<cr>
 
 " Fugitive
 	command! -nargs=? Gcs :vertical Git commit --signoff <args>
 	command! G :tab Git
+
+" vim-vsnip
+	imap <silent> <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+	smap <silent> <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+	imap <silent> <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+	smap <silent> <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+function! Searchcount() abort
+	try
+		if v:hlsearch ==# 0
+			return ''
+		endif
+		let result = searchcount(#{recompute: 1, maxcount: -1})
+		if empty(result) || result.total ==# 0
+			return ''
+		endif
+		if result.incomplete ==# 1     " timed out
+			return '[?/??]'
+		elseif result.incomplete ==# 2 " max count exceeded
+			return printf(result.current > result.maxcount ? '[>%d/>%d]' : '[%d/>%d]',
+			\		      result.current, result.total)
+		endif
+		return printf('[%d/%d]', result.current, result.total)
+	catch
+		return ''
+	endtry
+endfunction
+
+function! Visualcount() abort
+	let result = get(wordcount(), 'visual_chars', 0)
+	return result ? printf('[selected %d]', result) : ''
+endfunction
 
 " Light line
 	set noshowmode
 	let g:lightline = {
 		\ 'active': {
 		\   'left': [ [ 'mode', 'paste' ],
-		\             [ 'filename', 'readonly', 'gitbranch', 'modified' ] ],
+		\             [ 'filename', 'readonly', 'gitbranch', 'modified' ]],
 		\   'right': [ [ 'lineinfo' ],
-		\              [ 'percent' ],
-		\              [ 'filetype' ] ]
+		\              [ 'charvaluehex' ],
+		\              [ 'visualcount', 'searchcount', 'filetype' ] ]
+		\ },
+		\ 'enable': {
+		\   'statusline': 1,
+		\   'tabline': 0
+		\ },
+		\ 'component': {
+		\   'lineinfo': '%3l:%-2v'
 		\ },
 		\ 'component_function': {
+		\   'visualcount': 'Visualcount',
+		\   'searchcount': 'Searchcount',
 		\   'gitbranch': 'FugitiveHead'
 		\ },
 		\ 'separator': { 'left': "\uE0B0", 'right': "\uE0B2" },
 		\ 'subseparator': { 'left': "", 'right': "" },
 		\ }
+
+" Stop setting of conceal
+let g:indentLine_setConceal=0
+set foldtext=
 
 " hi CursorLine gui=underline guisp=#4d5154

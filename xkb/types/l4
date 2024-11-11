@@ -1,0 +1,26 @@
+partial xkb_types "l4" {
+    type "FOUR_LEVEL_LALT" {
+		modifiers = Shift+Lock+LAlt+LevelThree;
+		map[None] = Level1;
+		map[Shift] = Level2;
+		map[Lock]  = Level2;
+		map[LevelThree] = Level3;
+		map[Shift+LevelThree] = Level3;
+		map[LAlt+LevelThree] = Level4;
+		map[Shift+LAlt+LevelThree] = Level4;
+		map[Lock+LevelThree] =  Level3;
+		map[Lock+Shift+LevelThree] = Level4;
+		preserve[Lock+LevelThree] = Lock;
+		preserve[Lock+Shift+LevelThree] = Lock;
+		preserve[Lock+LevelThree] = Lock;
+		preserve[Lock+Shift+LevelThree] = Lock;
+
+		preserve[Shift+LAlt] = LAlt;
+		preserve[LAlt] = LAlt;
+
+		level_name[Level1] = "Base";
+		level_name[Level2] = "Shift";
+		level_name[Level3] = "RAlt";
+		level_name[Level4] = "RAlt LAlt";
+    };
+};
